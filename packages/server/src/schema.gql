@@ -1,0 +1,61 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type AnswerEntity {
+  questionId: ID!
+  value: String!
+}
+
+input AnswerInputDto {
+  questionId: ID!
+  value: String!
+}
+
+type FormEntity {
+  description: String
+  id: ID!
+  questions: [QuestionEntity!]!
+  title: String!
+}
+
+type Mutation {
+  createForm(description: String, questions: [QuestionInputDto!], title: String!): FormEntity!
+  deleteForm(id: ID!): Boolean!
+  submitResponse(answers: [AnswerInputDto!]!, formId: ID!): ResponseEntity!
+}
+
+type Query {
+  form(id: ID!): FormEntity
+  forms: [FormEntity!]!
+  responses(formId: ID!): [ResponseEntity!]!
+}
+
+type QuestionEntity {
+  id: ID!
+  options: [String!]
+  required: Boolean
+  text: String!
+  type: QuestionType!
+}
+
+input QuestionInputDto {
+  options: [String!]
+  required: Boolean
+  text: String!
+  type: QuestionType!
+}
+
+"""Type of form question"""
+enum QuestionType {
+  CHECKBOX
+  DATE
+  MULTIPLE_CHOICE
+  TEXT
+}
+
+type ResponseEntity {
+  answers: [AnswerEntity!]!
+  formId: ID!
+  id: ID!
+}

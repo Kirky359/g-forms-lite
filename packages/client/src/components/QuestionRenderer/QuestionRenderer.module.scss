@@ -1,0 +1,48 @@
+@use '../../styles/variables' as *;
+
+.questionRenderer {
+  margin-bottom: $spacing-xl;
+
+  &__label {
+    display: block;
+    font-size: $font-size-md;
+    font-weight: 500;
+    color: $color-text-primary;
+    margin-bottom: $spacing-sm;
+  }
+
+  &__required {
+    color: $color-error;
+  }
+
+  &__input {
+    width: 100%;
+    padding: $spacing-md;
+    font-size: $font-size-md;
+    border: 1px solid $color-border;
+    border-radius: $radius-sm;
+    overflow-wrap: anywhere;
+  }
+
+  &__textarea {
+    @extend .questionRenderer__input;
+    resize: none;
+    min-height: 44px;
+    line-height: 1.35;
+  }
+
+  &__optionGroup {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-sm;
+  }
+
+  &__optionLabel {
+    display: flex;
+    align-items: center;
+    gap: $spacing-md;
+    font-size: $font-size-md;
+    cursor: pointer;
+    overflow-wrap: anywhere;
+  }
+}

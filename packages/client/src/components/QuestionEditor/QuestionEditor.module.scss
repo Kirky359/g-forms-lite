@@ -1,0 +1,118 @@
+@use '../../styles/variables' as *;
+
+.questionEditor {
+  background: $color-bg-card;
+  border: 1px solid #dadce0;
+  border-left: 4px solid #b39ddb;
+  border-radius: 10px;
+  padding: $spacing-lg;
+  margin-bottom: 0;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+
+  &__row {
+    display: flex;
+    gap: $spacing-md;
+    margin-bottom: $spacing-md;
+  }
+
+  &__input {
+    flex: 1;
+    padding: 0.8rem $spacing-md;
+    font-size: $font-size-md;
+    border: 1px solid #dadce0;
+    border-radius: 8px;
+
+    &:focus {
+      outline: 2px solid #d7c8f5;
+      border-color: $color-accent;
+    }
+  }
+
+  &__textarea {
+    @extend .questionEditor__input;
+    resize: none;
+    min-height: 44px;
+    line-height: 1.35;
+  }
+
+  &__removeBtn {
+    padding: $spacing-sm $spacing-md;
+    color: $color-error;
+    background: transparent;
+    border: 1px solid #f1d1ce;
+    border-radius: 8px;
+    font-size: $font-size-base;
+
+    &:hover {
+      background: $color-error-bg;
+    }
+  }
+
+  &__checkbox {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+    margin-bottom: $spacing-md;
+    font-size: $font-size-base;
+    color: $color-text-secondary;
+  }
+
+  &__options {
+    margin-top: $spacing-md;
+    padding-top: $spacing-md;
+    border-top: 1px solid #ece6f8;
+  }
+
+  &__optionsLabel {
+    display: block;
+    font-size: $font-size-base;
+    color: $color-text-secondary;
+    margin-bottom: $spacing-sm;
+  }
+
+  &__optionRow {
+    display: flex;
+    gap: $spacing-sm;
+    margin-bottom: $spacing-sm;
+  }
+
+  &__optionInput {
+    flex: 1;
+    padding: 0.7rem $spacing-md;
+    font-size: 0.9rem;
+    border: 1px solid $color-border;
+    border-radius: 8px;
+    overflow-wrap: anywhere;
+
+    &:focus {
+      outline: 2px solid #d7c8f5;
+      border-color: $color-accent;
+    }
+  }
+
+  &__removeOptionBtn {
+    width: 2.4rem;
+    padding: 0;
+    font-size: $font-size-lg;
+    color: $color-text-secondary;
+    background: transparent;
+    border: 1px solid $color-border;
+    border-radius: 8px;
+
+    &:hover {
+      color: $color-error;
+    }
+  }
+
+  &__addOption {
+    padding: 0;
+    font-size: $font-size-md;
+    color: $color-link;
+    background: transparent;
+    border: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}

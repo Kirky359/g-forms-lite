@@ -1,0 +1,139 @@
+@use '../../styles/variables' as *;
+@use '../../styles/queries' as *;
+
+.formResponsesPage {
+  max-width: $max-width-wide;
+  margin: 0 auto;
+  padding: $spacing-2xl;
+
+  @include respond-to-max(md) {
+    padding: $spacing-lg;
+  }
+
+  &__shell {
+    background: $color-bg-card;
+    border: 1px solid #d9d2ea;
+    border-radius: 12px;
+    padding: $spacing-2xl;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+    position: relative;
+    overflow: hidden;
+
+    &::before {
+      content: '';
+      position: absolute;
+      inset: 0 0 auto 0;
+      height: 10px;
+      background: $color-accent;
+    }
+  }
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: $spacing-xl;
+    flex-wrap: wrap;
+    gap: $spacing-lg;
+  }
+
+  &__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $spacing-sm;
+  }
+
+  &__title {
+    margin: 0;
+    font-size: $font-size-2xl;
+    font-weight: 500;
+    color: $color-text-primary;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    white-space: pre-wrap;
+  }
+
+  &__actionLink {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 38px;
+    padding: 0.45rem 0.95rem;
+    border-radius: 8px;
+    border: 1px solid #ddd5ee;
+    background: #fff;
+    color: $color-link;
+    font-size: $font-size-base;
+    font-weight: 500;
+
+    &:hover {
+      background: #f6f1ff;
+      text-decoration: none;
+    }
+  }
+
+  &__empty {
+    color: $color-text-secondary;
+    padding: $spacing-xl;
+    text-align: center;
+  }
+
+  &__error {
+    color: $color-error;
+    margin-bottom: $spacing-lg;
+  }
+
+  &__responses {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-lg;
+  }
+
+  &__responseCard {
+    background: #fff;
+    border: 1px solid #ebe7f3;
+    border-radius: 10px;
+    padding: $spacing-xl;
+  }
+
+  &__responseCardTitle {
+    margin: 0 0 $spacing-lg;
+    font-size: $font-size-md;
+    color: $color-text-secondary;
+    font-weight: 600;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    white-space: pre-wrap;
+  }
+
+  &__answerList {
+    margin: 0;
+  }
+
+  &__answerRow {
+    padding: $spacing-sm 0;
+    border-bottom: 1px solid #f1f3f4;
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  &__answerTerm {
+    font-size: $font-size-base;
+    color: $color-text-secondary;
+    margin: 0 0 $spacing-xs;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    white-space: pre-wrap;
+  }
+
+  &__answerDesc {
+    margin: 0;
+    font-size: $font-size-md;
+    color: $color-text-primary;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    white-space: pre-wrap;
+  }
+}

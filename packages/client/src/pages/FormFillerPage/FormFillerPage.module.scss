@@ -1,0 +1,112 @@
+@use "../../styles/variables" as *;
+@use "../../styles/queries" as *;
+
+.formFillerPage {
+  max-width: $max-width-narrow;
+  margin: 0 auto;
+  padding: $spacing-2xl;
+
+  @include respond-to-max(md) {
+    padding: $spacing-lg;
+  }
+
+  &__card {
+    background: $color-bg-card;
+    border: 1px solid #d9d2ea;
+    border-radius: 12px;
+    padding: $spacing-2xl;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+    position: relative;
+    overflow: hidden;
+
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 0 0 auto 0;
+      height: 10px;
+      background: $color-accent;
+    }
+  }
+
+  &__cardTitle {
+    margin: 0 0 $spacing-sm;
+    font-size: $font-size-2xl;
+    font-weight: 500;
+    color: $color-text-primary;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    white-space: pre-wrap;
+  }
+
+  &__cardDescription {
+    color: $color-text-secondary;
+    margin: 0 0 $spacing-2xl;
+    font-size: 0.95rem;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    white-space: pre-wrap;
+  }
+
+  &__topActions {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: $spacing-sm;
+  }
+
+  &__actionLink {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 38px;
+    padding: 0.45rem 0.95rem;
+    border-radius: 8px;
+    border: 1px solid #ddd5ee;
+    background: #fff;
+    color: $color-link;
+    font-size: $font-size-base;
+    font-weight: 500;
+
+    &:hover {
+      background: #f6f1ff;
+      text-decoration: none;
+    }
+  }
+
+  &__submitButton {
+    margin-top: $spacing-lg;
+    padding: $spacing-md $spacing-xl;
+    background: $color-link;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: $font-size-md;
+    font-weight: 500;
+
+    &:hover:not(:disabled) {
+      background: $color-link-hover;
+    }
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+  }
+
+  &__success {
+    background: $color-success-bg;
+    border: 1px solid $color-success-border;
+    border-radius: 12px;
+    padding: $spacing-2xl;
+    text-align: center;
+  }
+
+  &__successTitle {
+    margin: 0 0 $spacing-lg;
+    color: $color-success;
+  }
+
+  &__error {
+    color: $color-error;
+    margin-bottom: $spacing-lg;
+  }
+}

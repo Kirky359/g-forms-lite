@@ -1,0 +1,157 @@
+@use '../../styles/variables' as *;
+@use '../../styles/queries' as *;
+
+.formBuilderPage {
+  max-width: $max-width-medium;
+  margin: 0 auto;
+  padding: $spacing-2xl;
+
+  @include respond-to-max(md) {
+    padding: $spacing-lg;
+  }
+
+  &__header {
+    margin-bottom: $spacing-xl;
+  }
+
+  &__title {
+    margin: 0;
+    font-size: $font-size-2xl;
+    font-weight: 500;
+    color: $color-text-primary;
+  }
+
+  &__form {
+    background: $color-bg-card;
+    border: 1px solid #d9d2ea;
+    border-radius: 12px;
+    padding: $spacing-2xl;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+    position: relative;
+    overflow: hidden;
+
+    &::before {
+      content: '';
+      position: absolute;
+      inset: 0 0 auto 0;
+      height: 10px;
+      background: $color-accent;
+    }
+  }
+
+  &__field {
+    margin-bottom: $spacing-lg;
+  }
+
+  &__fieldLabel {
+    display: block;
+    font-size: $font-size-sm;
+    font-weight: 500;
+    color: $color-text-secondary;
+    margin-bottom: $spacing-sm;
+  }
+
+  &__fieldInput {
+    width: 100%;
+    padding: 0.9rem $spacing-md;
+    font-size: $font-size-md;
+    border: 1px solid $color-border;
+    border-radius: 8px;
+
+    &:focus {
+      outline: 2px solid #d7c8f5;
+      border-color: $color-accent;
+    }
+  }
+
+  &__fieldTextarea {
+    @extend .formBuilderPage__fieldInput;
+    resize: none;
+    min-height: 44px;
+    line-height: 1.35;
+  }
+
+  &__fieldMeta {
+    display: block;
+    margin-top: $spacing-xs;
+    text-align: right;
+    font-size: $font-size-sm;
+    color: $color-text-secondary;
+  }
+
+  &__questionsSection {
+    margin-top: $spacing-2xl;
+  }
+
+  &__questionsTitle {
+    font-size: $font-size-md;
+    font-weight: 500;
+    margin: 0 0 $spacing-lg;
+    color: $color-text-primary;
+  }
+
+  &__addButtons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $spacing-sm;
+    margin-bottom: $spacing-xl;
+  }
+
+  &__addBtn {
+    padding: $spacing-sm $spacing-lg;
+    font-size: $font-size-sm;
+    font-weight: 500;
+    background: $color-bg-muted;
+    border: 1px solid #ddd5ee;
+    border-radius: 999px;
+    color: $color-link;
+
+    &:hover {
+      background: $color-bg-muted-hover;
+    }
+  }
+
+  &__questionWrapper {
+    margin-bottom: $spacing-lg;
+  }
+
+  &__questionType {
+    display: inline-flex;
+    align-items: center;
+    margin: 0 0 $spacing-sm;
+    padding: 0.2rem 0.6rem;
+    font-size: 0.7rem;
+    letter-spacing: 0.04em;
+    font-weight: 600;
+    color: #5f3ea4;
+    text-transform: uppercase;
+    border-radius: 999px;
+    background: #f2ebff;
+  }
+
+  &__error {
+    color: $color-error;
+    margin: $spacing-lg 0;
+    font-size: 0.9rem;
+  }
+
+  &__saveButton {
+    margin-top: $spacing-xl;
+    padding: $spacing-md $spacing-xl;
+    background: $color-accent;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: $font-size-md;
+    font-weight: 500;
+
+    &:hover:not(:disabled) {
+      background: $color-link-hover;
+    }
+  }
+
+  &__saveButtonDisabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
