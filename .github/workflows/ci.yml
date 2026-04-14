@@ -27,6 +27,10 @@ jobs:
       - name: Build shared package
         run: npm run build --workspace=@forms/shared
 
+      - name: Generate Prisma client
+        run: npx prisma generate
+        working-directory: packages/server
+
       - name: Typecheck (all workspaces)
         run: npm run typecheck
 
