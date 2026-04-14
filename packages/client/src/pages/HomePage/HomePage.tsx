@@ -1,9 +1,11 @@
 import { Link } from "react-router-dom";
 import { useGetFormsQuery, useDeleteFormMutation } from "../../store/formsApi.endpoints";
+import { useAuth } from "../../context/AuthContext";
 import { toErrorMessage } from "../../utils/error";
 import styles from "./HomePage.module.scss";
 
 export function HomePage() {
+  const { user, signOut } = useAuth();
   const { data, isLoading, error } = useGetFormsQuery();
   const [deleteForm, { isLoading: isDeleting }] = useDeleteFormMutation();
 
@@ -23,9 +25,19 @@ export function HomePage() {
     <div className={styles.homePage}>
       <header className={styles.homePage__header}>
         <h1 className={styles.homePage__title}>Forms Lite</h1>
-        <Link to="/forms/new" className={styles.homePage__createButton}>
-          Create New Form
-        </Link>
+        <div className={styles.homePage__headerActions}>
+          <span className={styles.homePage__userEmail}>{user?.email}</span>
+          <Link to="/forms/new" className={styles.homePage__createButton}>
+            Create New Form
+          </Link>
+          <button
+            type="button"
+            className={styles.homePage__signOutButton}
+            onClick={() => void signOut()}
+          >
+            Sign Out
+          </button>
+        </div>
       </header>
 
       {isLoading && (
@@ -34,7 +46,7 @@ export function HomePage() {
       {error && (
         <p className={styles.homePage__error}>
           Failed to load forms:{" "}
-          {error instanceof Error ? error.message : "Unknown error"}
+          {toErrorMessage(error, "Unknown error")}
         </p>
       )}
 
@@ -60,6 +72,12 @@ export function HomePage() {
                   className={styles.homePage__actionLink}
                 >
                   View Form
+                </Link>
+                <Link
+                  to={`/forms/${form.id}/edit`}
+                  className={styles.homePage__actionLink}
+                >
+                  Edit
                 </Link>
                 <Link
                   to={`/forms/${form.id}/responses`}

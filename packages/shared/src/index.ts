@@ -8,4 +8,4 @@ export {
   type AnswerInput,
 } from './types';
 
-export { MAX_TEXT_LENGTH } from './constants';
+export { MAX_TEXT_LENGTH, isValidEmail } from './constants';

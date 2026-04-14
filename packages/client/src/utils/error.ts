@@ -28,3 +28,9 @@ export function toErrorMessage(error: unknown, fallback: string): string {
 export function reportClientError(context: string, error: unknown): void {
   console.error(context, error);
 }
+
+export function getRtkErrorMessage(error: unknown): string | undefined {
+  if (!error) return undefined;
+  const msg = toErrorMessage(error, '');
+  return msg || undefined;
+}

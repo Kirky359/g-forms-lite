@@ -1,4 +1,5 @@
 @use '../../styles/variables' as *;
+@use 'sass:color';
 
 .questionEditor {
   background: $color-bg-card;
@@ -31,8 +32,10 @@
   &__textarea {
     @extend .questionEditor__input;
     resize: none;
-    min-height: 44px;
-    line-height: 1.35;
+    min-height: 80px;
+    max-height: 240px;
+    overflow-y: auto;
+    line-height: 1.5;
   }
 
   &__removeBtn {
@@ -63,17 +66,94 @@
     border-top: 1px solid #ece6f8;
   }
 
+  &__optionsHeader {
+    display: flex;
+    align-items: center;
+    margin-bottom: $spacing-sm;
+  }
+
   &__optionsLabel {
+    flex: 1;
+    font-size: $font-size-base;
+    color: $color-text-secondary;
+  }
+
+  &__correctLabel {
+    font-size: 0.75rem;
+    color: $color-text-secondary;
+    margin-right: 2.9rem;
+  }
+
+  &__optionRow {
+    display: flex;
+    gap: $spacing-sm;
+    align-items: center;
+    margin-bottom: $spacing-sm;
+  }
+
+  &__correctMark {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.4rem;
+    height: 2.4rem;
+    border-radius: 50%;
+    border: 1px solid $color-border;
+    font-size: 1rem;
+    color: $color-text-secondary;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: background 0.15s, border-color 0.15s, color 0.15s;
+
+    &:hover {
+      border-color: #7c4dff;
+      color: #7c4dff;
+    }
+
+    &--active {
+      background: #e8f5e9;
+      border-color: #43a047;
+      color: #2e7d32;
+    }
+  }
+
+  &__correctInput {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  &__correctAnswerField {
+    margin-top: $spacing-md;
+    padding-top: $spacing-md;
+    border-top: 1px solid #ece6f8;
+  }
+
+  &__correctAnswerLabel {
     display: block;
     font-size: $font-size-base;
     color: $color-text-secondary;
     margin-bottom: $spacing-sm;
   }
 
-  &__optionRow {
-    display: flex;
-    gap: $spacing-sm;
-    margin-bottom: $spacing-sm;
+  &__correctAnswerHint {
+    font-size: 0.78rem;
+    color: #aaa;
+  }
+
+  &__correctAnswerInput {
+    width: 100%;
+    padding: 0.7rem $spacing-md;
+    font-size: 0.9rem;
+    border: 1px solid $color-border;
+    border-radius: 8px;
+    box-sizing: border-box;
+
+    &:focus {
+      outline: 2px solid #d7c8f5;
+      border-color: $color-accent;
+    }
   }
 
   &__optionInput {
@@ -113,6 +193,69 @@
 
     &:hover {
       text-decoration: underline;
+    }
+  }
+
+  &__modalOverlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+
+  &__modal {
+    background: $color-bg-card;
+    border-radius: 12px;
+    padding: $spacing-2xl;
+    min-width: 280px;
+    max-width: 360px;
+    width: 90%;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-xl;
+  }
+
+  &__modalText {
+    margin: 0;
+    font-size: $font-size-md;
+    font-weight: 500;
+    color: $color-text-primary;
+    text-align: center;
+  }
+
+  &__modalActions {
+    display: flex;
+    gap: $spacing-md;
+    justify-content: flex-end;
+  }
+
+  &__modalCancel {
+    padding: $spacing-sm $spacing-lg;
+    font-size: $font-size-base;
+    background: transparent;
+    color: $color-text-secondary;
+    border: 1px solid $color-border;
+    border-radius: 8px;
+
+    &:hover {
+      background: $color-bg-muted;
+    }
+  }
+
+  &__modalConfirm {
+    padding: $spacing-sm $spacing-lg;
+    font-size: $font-size-base;
+    background: $color-error;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+
+    &:hover {
+      background: color.adjust($color-error, $lightness: -8%);
     }
   }
 }

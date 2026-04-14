@@ -41,6 +41,38 @@
     color: $color-text-primary;
   }
 
+  &__headerActions {
+    display: flex;
+    align-items: center;
+    gap: $spacing-md;
+    flex-wrap: wrap;
+  }
+
+  &__userEmail {
+    font-size: $font-size-base;
+    color: $color-text-secondary;
+  }
+
+  &__signOutButton {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 40px;
+    padding: 0.55rem 1.15rem;
+    background: transparent;
+    color: $color-text-secondary;
+    border-radius: 999px;
+    font-size: $font-size-base;
+    font-weight: 500;
+    border: 1px solid $color-border;
+    cursor: pointer;
+
+    &:hover {
+      background: $color-bg-muted;
+      color: $color-text-primary;
+    }
+  }
+
   &__createButton {
     display: inline-flex;
     align-items: center;

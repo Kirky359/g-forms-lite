@@ -23,4 +23,7 @@ export class QuestionEntity {
 
   @Field({ nullable: true })
   required?: boolean;
+
+  @Field({ nullable: true })
+  correctAnswer?: string;
 }

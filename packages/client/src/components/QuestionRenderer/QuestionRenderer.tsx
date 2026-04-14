@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import type { Question } from '@forms/shared';
-import { MAX_TEXT_LENGTH } from '@shared/constants';
+import { MAX_TEXT_LENGTH } from '@forms/shared';
 import styles from './QuestionRenderer.module.scss';
 
 interface QuestionRendererProps {
@@ -52,6 +52,21 @@ export function QuestionRenderer({
             required={required}
             maxLength={MAX_TEXT_LENGTH}
             rows={1}
+          />
+        </div>
+      );
+
+    case 'EMAIL':
+      return (
+        <div className={styles.questionRenderer}>
+          {label}
+          <input
+            type="email"
+            value={valStr}
+            onChange={(e) => onChange(e.target.value)}
+            className={styles.questionRenderer__input}
+            required={required}
+            placeholder="you@example.com"
           />
         </div>
       );

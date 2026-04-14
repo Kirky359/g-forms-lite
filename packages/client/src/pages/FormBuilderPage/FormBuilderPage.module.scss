@@ -79,6 +79,46 @@
     color: $color-text-secondary;
   }
 
+  &__settingsSection {
+    margin-top: $spacing-xl;
+    padding: $spacing-lg;
+    background: #f9f6ff;
+    border: 1px solid #e4d9f5;
+    border-radius: 8px;
+    margin-bottom: $spacing-lg;
+  }
+
+  &__toggleLabel {
+    display: flex;
+    align-items: flex-start;
+    gap: $spacing-md;
+    cursor: pointer;
+  }
+
+  &__toggleInput {
+    margin-top: 3px;
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+    accent-color: $color-accent;
+    cursor: pointer;
+  }
+
+  &__toggleText {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-xs;
+    font-size: $font-size-base;
+    font-weight: 500;
+    color: $color-text-primary;
+  }
+
+  &__toggleHint {
+    font-size: $font-size-sm;
+    font-weight: 400;
+    color: $color-text-secondary;
+  }
+
   &__questionsSection {
     margin-top: $spacing-2xl;
   }
@@ -135,8 +175,33 @@
     font-size: 0.9rem;
   }
 
-  &__saveButton {
+  &__actions {
+    display: flex;
+    gap: $spacing-md;
     margin-top: $spacing-xl;
+    align-items: center;
+  }
+
+  &__cancelButton {
+    padding: $spacing-md $spacing-xl;
+    background: transparent;
+    color: $color-text-secondary;
+    border: 1px solid $color-border;
+    border-radius: 8px;
+    font-size: $font-size-md;
+    font-weight: 500;
+
+    &:hover:not(:disabled) {
+      background: $color-bg-muted;
+    }
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+  }
+
+  &__saveButton {
     padding: $spacing-md $spacing-xl;
     background: $color-accent;
     color: white;

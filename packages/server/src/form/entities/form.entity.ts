@@ -13,6 +13,9 @@ export class FormEntity implements SharedForm {
   @Field({ nullable: true })
   description?: string;
 
+  @Field()
+  requireEmail: boolean;
+
   @Field(() => [QuestionEntity])
   questions: QuestionEntity[];
 }

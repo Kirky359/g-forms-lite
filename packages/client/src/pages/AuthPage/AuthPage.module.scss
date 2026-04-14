@@ -1,0 +1,217 @@
+@use '../../styles/variables' as *;
+
+.authPage {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: $color-bg-page;
+  padding: $spacing-xl;
+}
+
+.authPage__card {
+  background: $color-bg-card;
+  border-radius: $radius-md;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.08);
+  padding: $spacing-2xl;
+  width: 100%;
+  max-width: 400px;
+}
+
+.authPage__title {
+  font-size: $font-size-2xl;
+  font-weight: 600;
+  color: $color-accent;
+  text-align: center;
+  margin: 0 0 $spacing-xl;
+}
+
+.authPage__tabs {
+  display: flex;
+  border-bottom: 2px solid $color-border;
+  margin-bottom: $spacing-xl;
+}
+
+.authPage__tab {
+  flex: 1;
+  background: none;
+  border: none;
+  padding: $spacing-md $spacing-lg;
+  font-size: $font-size-base;
+  font-weight: 500;
+  color: $color-text-secondary;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  transition: color 0.15s, border-color 0.15s;
+
+  &:hover {
+    color: $color-accent;
+  }
+
+  &--active {
+    color: $color-accent;
+    border-bottom-color: $color-accent;
+  }
+}
+
+.authPage__form {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-lg;
+}
+
+.authPage__field {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-xs;
+}
+
+.authPage__label {
+  font-size: $font-size-base;
+  font-weight: 500;
+  color: $color-text-primary;
+}
+
+.authPage__input {
+  padding: $spacing-md $spacing-lg;
+  border: 1px solid $color-border;
+  border-radius: $radius-sm;
+  font-size: $font-size-md;
+  color: $color-text-primary;
+  background: $color-bg-card;
+  outline: none;
+  transition: border-color 0.15s;
+
+  &:focus {
+    border-color: $color-accent;
+    box-shadow: 0 0 0 2px $color-accent-soft;
+  }
+
+  &::placeholder {
+    color: $color-text-secondary;
+  }
+
+  &--error {
+    border-color: $color-error;
+
+    &:focus {
+      border-color: $color-error;
+      box-shadow: 0 0 0 2px rgba($color-error, 0.15);
+    }
+  }
+}
+
+.authPage__fieldError {
+  font-size: $font-size-sm;
+  color: $color-error;
+  margin-top: 2px;
+}
+
+.authPage__error {
+  font-size: $font-size-base;
+  color: $color-error;
+  background: $color-error-bg;
+  padding: $spacing-sm $spacing-md;
+  border-radius: $radius-sm;
+  margin: 0;
+}
+
+.authPage__divider {
+  display: flex;
+  align-items: center;
+  gap: $spacing-md;
+  margin: $spacing-lg 0;
+  color: $color-text-secondary;
+  font-size: $font-size-base;
+
+  &::before,
+  &::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: $color-border;
+  }
+}
+
+.authPage__socialButtons {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+}
+
+.authPage__googleButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing-md;
+  padding: $spacing-md $spacing-xl;
+  background: $color-bg-card;
+  color: $color-text-primary;
+  border: 1px solid $color-border;
+  border-radius: $radius-sm;
+  font-size: $font-size-md;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s;
+
+  &:hover:not(:disabled) {
+    background: $color-bg-muted;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.authPage__anonymousButton {
+  padding: $spacing-md $spacing-xl;
+  background: transparent;
+  color: $color-text-secondary;
+  border: 1px solid $color-border;
+  border-radius: $radius-sm;
+  font-size: $font-size-md;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+
+  &:hover:not(:disabled) {
+    background: $color-bg-muted;
+    color: $color-text-primary;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+
+.authPage__googleHint {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  text-align: center;
+  margin: 0;
+}
+
+.authPage__submit {
+  margin-top: $spacing-sm;
+  padding: $spacing-md $spacing-xl;
+  background: $color-accent;
+  color: #fff;
+  border: none;
+  border-radius: $radius-sm;
+  font-size: $font-size-md;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s;
+
+  &:hover:not(:disabled) {
+    background: $color-link-hover;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}

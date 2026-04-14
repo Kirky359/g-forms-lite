@@ -1,80 +1,125 @@
-import { Injectable } from "@nestjs/common";
-import { v4 as uuidv4 } from "uuid";
-import { MAX_TEXT_LENGTH, type Form, type Question } from "@forms/shared";
-import { FormEntity } from "./entities/form.entity";
-import { QuestionEntity } from "./entities/question.entity";
-import type { CreateFormInputDto } from "./dto/create-form.dto";
+import { Injectable, Logger, ForbiddenException } from '@nestjs/common';
+import { PrismaService } from '../prisma/prisma.service';
+import { FormEntity } from './entities/form.entity';
+import { QuestionEntity } from './entities/question.entity';
+import type { CreateFormInputDto, UpdateFormInputDto } from './dto/create-form.dto';
+import type { Form, Question } from '../generated/prisma/client';
+
+type FormWithQuestions = Form & { questions: Question[] };
 
 @Injectable()
 export class FormService {
-  private readonly forms = new Map<string, Form>();
+  private readonly logger = new Logger(FormService.name);
 
-  findAll(): Form[] {
-    return Array.from(this.forms.values());
+  constructor(private readonly prisma: PrismaService) {}
+
+  async findAll(userId: string): Promise<FormWithQuestions[]> {
+    return this.prisma.form.findMany({
+      where: { userId },
+      include: { questions: { orderBy: { order: 'asc' } } },
+      orderBy: { createdAt: 'desc' },
+    });
   }
 
-  findById(id: string): Form | undefined {
-    return this.forms.get(id);
+  async findById(id: string): Promise<FormWithQuestions | null> {
+    return this.prisma.form.findUnique({
+      where: { id },
+      include: { questions: { orderBy: { order: 'asc' } } },
+    });
   }
 
-  create(input: CreateFormInputDto): Form {
-    this.validateTextLength(input.title, "Form title");
-    this.validateTextLength(input.description, "Form description");
-
-    for (const [index, question] of (input.questions ?? []).entries()) {
-      this.validateTextLength(question.text, `Question #${index + 1} text`);
-      for (const [optionIndex, option] of (question.options ?? []).entries()) {
-        this.validateTextLength(
-          option,
-          `Question #${index + 1} option #${optionIndex + 1}`,
-        );
-      }
-    }
-
-    const id = uuidv4();
-    const questions: Question[] = (input.questions ?? []).map((q, index) => ({
-      id: `${id}-q-${index}`,
-      type: q.type,
-      text: q.text,
-      options: q.options,
-      required: q.required,
-    }));
-    const form: Form = {
-      id,
-      title: input.title,
-      description: input.description,
-      questions,
-    };
-    this.forms.set(id, form);
+  async create(input: CreateFormInputDto, userId: string): Promise<FormWithQuestions> {
+    const form = await this.prisma.form.create({
+      data: {
+        userId,
+        title: input.title,
+        description: input.description,
+        requireEmail: input.requireEmail ?? false,
+        questions: {
+          create: (input.questions ?? []).map((q, index) => ({
+            type: q.type,
+            text: q.text,
+            options: q.options ?? [],
+            required: q.required ?? false,
+            order: index,
+            correctAnswer: q.correctAnswer ?? null,
+          })),
+        },
+      },
+      include: { questions: { orderBy: { order: 'asc' } } },
+    });
+    this.logger.log(`Created new form with id ${form.id}`);
     return form;
   }
 
-  deleteById(id: string): boolean {
-    return this.forms.delete(id);
+  async update(id: string, userId: string, input: UpdateFormInputDto): Promise<FormWithQuestions> {
+    const form = await this.prisma.form.findUnique({ where: { id } });
+    if (!form || form.userId !== userId) throw new ForbiddenException();
+
+    const updated = await this.prisma.form.update({
+      where: { id },
+      data: {
+        title: input.title,
+        description: input.description ?? null,
+        requireEmail: input.requireEmail ?? form.requireEmail,
+        questions: {
+          deleteMany: {},
+          create: input.questions.map((q, index) => ({
+            type: q.type,
+            text: q.text,
+            options: q.options ?? [],
+            required: q.required ?? false,
+            order: index,
+            correctAnswer: q.correctAnswer ?? null,
+          })),
+        },
+      },
+      include: { questions: { orderBy: { order: 'asc' } } },
+    });
+    this.logger.log(`Updated form ${id}`);
+    return updated;
   }
 
-  toFormEntity(form: Form): FormEntity {
+  async deleteById(id: string, userId: string): Promise<boolean> {
+    const form = await this.prisma.form.findUnique({ where: { id } });
+    if (!form || form.userId !== userId) return false;
+    await this.prisma.form.delete({ where: { id } });
+    this.logger.log(`Deleted form ${id}`);
+    return true;
+  }
+
+  toFormEntity(form: FormWithQuestions): FormEntity {
     return {
       id: form.id,
       title: form.title,
-      description: form.description,
+      description: form.description ?? undefined,
+      requireEmail: form.requireEmail,
       questions: form.questions.map(this.toQuestionEntity),
+    };
+  }
+
+  // Public form view: strips correct answers so respondents can't read them via API
+  toPublicFormEntity(form: FormWithQuestions): FormEntity {
+    return {
+      id: form.id,
+      title: form.title,
+      description: form.description ?? undefined,
+      requireEmail: form.requireEmail,
+      questions: form.questions.map((q) => ({
+        ...this.toQuestionEntity(q),
+        correctAnswer: undefined,
+      })),
     };
   }
 
   private toQuestionEntity(q: Question): QuestionEntity {
     return {
       id: q.id,
-      type: q.type,
+      type: q.type as QuestionEntity['type'],
       text: q.text,
-      options: q.options,
+      options: q.options.length > 0 ? q.options : undefined,
       required: q.required,
+      correctAnswer: q.correctAnswer ?? undefined,
     };
-  }
-
-  private validateTextLength(value: string | undefined, fieldName: string): void {
-    if (value && value.length > MAX_TEXT_LENGTH) {
-      throw new Error(`${fieldName} exceeds ${MAX_TEXT_LENGTH} characters`);
-    }
   }
 }

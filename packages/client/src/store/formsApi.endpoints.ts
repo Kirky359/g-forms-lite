@@ -12,12 +12,14 @@ export const formsApiEndpoints = formsApi.injectEndpoints({
               id
               title
               description
+              requireEmail
               questions {
                 id
                 type
                 text
                 options
                 required
+                correctAnswer
               }
             }
           }
@@ -33,12 +35,14 @@ export const formsApiEndpoints = formsApi.injectEndpoints({
               id
               title
               description
+              requireEmail
               questions {
                 id
                 type
                 text
                 options
                 required
+                correctAnswer
               }
             }
           }
@@ -52,11 +56,13 @@ export const formsApiEndpoints = formsApi.injectEndpoints({
       {
         title: string;
         description?: string;
+        requireEmail?: boolean;
         questions?: Array<{
           type: string;
           text: string;
           options?: string[];
           required?: boolean;
+          correctAnswer?: string;
         }>;
       }
     >({
@@ -65,22 +71,26 @@ export const formsApiEndpoints = formsApi.injectEndpoints({
           mutation CreateForm(
             $title: String!
             $description: String
+            $requireEmail: Boolean
             $questions: [QuestionInputDto!]
           ) {
             createForm(
               title: $title
               description: $description
+              requireEmail: $requireEmail
               questions: $questions
             ) {
               id
               title
               description
+              requireEmail
               questions {
                 id
                 type
                 text
                 options
                 required
+                correctAnswer
               }
             }
           }
@@ -88,6 +98,57 @@ export const formsApiEndpoints = formsApi.injectEndpoints({
         variables,
       }),
       invalidatesTags: ["Form"],
+    }),
+    updateForm: builder.mutation<
+      { updateForm: Form },
+      {
+        id: string;
+        title: string;
+        description?: string;
+        requireEmail?: boolean;
+        questions: Array<{
+          type: string;
+          text: string;
+          options?: string[];
+          required?: boolean;
+          correctAnswer?: string;
+        }>;
+      }
+    >({
+      query: (variables) => ({
+        document: gql`
+          mutation UpdateForm(
+            $id: ID!
+            $title: String!
+            $description: String
+            $requireEmail: Boolean
+            $questions: [QuestionInputDto!]!
+          ) {
+            updateForm(
+              id: $id
+              title: $title
+              description: $description
+              requireEmail: $requireEmail
+              questions: $questions
+            ) {
+              id
+              title
+              description
+              requireEmail
+              questions {
+                id
+                type
+                text
+                options
+                required
+                correctAnswer
+              }
+            }
+          }
+        `,
+        variables,
+      }),
+      invalidatesTags: (_result, _error, { id }) => ['Form', { type: 'Form', id }],
     }),
     deleteForm: builder.mutation<{ deleteForm: boolean }, { id: string }>({
       query: (variables) => ({
@@ -110,6 +171,8 @@ export const formsApiEndpoints = formsApi.injectEndpoints({
             responses(formId: $formId) {
               id
               formId
+              respondentEmail
+              score
               answers {
                 questionId
                 value
@@ -125,17 +188,28 @@ export const formsApiEndpoints = formsApi.injectEndpoints({
     }),
     submitResponse: builder.mutation<
       { submitResponse: Response },
-      { formId: string; answers: Array<{ questionId: string; value: string }> }
+      {
+        formId: string;
+        answers: Array<{ questionId: string; value: string }>;
+        respondentEmail?: string;
+      }
     >({
       query: (variables) => ({
         document: gql`
           mutation SubmitResponse(
             $formId: ID!
             $answers: [AnswerInputDto!]!
+            $respondentEmail: String
           ) {
-            submitResponse(formId: $formId, answers: $answers) {
+            submitResponse(
+              formId: $formId
+              answers: $answers
+              respondentEmail: $respondentEmail
+            ) {
               id
               formId
+              respondentEmail
+              score
               answers {
                 questionId
                 value
@@ -156,6 +230,7 @@ export const {
   useGetFormsQuery,
   useGetFormQuery,
   useCreateFormMutation,
+  useUpdateFormMutation,
   useDeleteFormMutation,
   useGetResponsesQuery,
   useSubmitResponseMutation,

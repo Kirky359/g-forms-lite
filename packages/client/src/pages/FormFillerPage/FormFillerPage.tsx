@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useParams, Link } from "react-router-dom";
+import { isValidEmail } from "@forms/shared";
 import { QuestionRenderer } from "../../components/QuestionRenderer";
 import { useFormFiller } from "../../hooks/useFormFiller";
 import {
@@ -12,7 +13,10 @@ import styles from "./FormFillerPage.module.scss";
 export function FormFillerPage() {
   const { id } = useParams<{ id: string }>();
   const [submitted, setSubmitted] = useState(false);
+  const [respondentEmail, setRespondentEmail] = useState("");
+  const [emailError, setEmailError] = useState<string | null>(null);
   const [validationError, setValidationError] = useState<string | null>(null);
+
   const { data, isLoading, error } = useGetFormQuery(
     { id: id ?? "" },
     { skip: !id },
@@ -54,17 +58,40 @@ export function FormFillerPage() {
     );
   }
 
+  const validateEmail = (value: string): string | null => {
+    if (!value.trim()) return "Email address is required.";
+    if (!isValidEmail(value)) return "Enter a valid email address (e.g. name@example.com).";
+    return null;
+  };
+
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setRespondentEmail(e.target.value);
+    if (emailError) setEmailError(validateEmail(e.target.value));
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setValidationError(null);
+
+    if (form.requireEmail) {
+      const err = validateEmail(respondentEmail);
+      if (err) {
+        setEmailError(err);
+        return;
+      }
+      setEmailError(null);
+    }
+
     if (!filler.validate()) {
       setValidationError("Please fill in all required fields.");
       return;
     }
+
     try {
       await submitResponse({
         formId: id,
         answers: filler.toSubmitFormat(),
+        respondentEmail: form.requireEmail ? respondentEmail : undefined,
       }).unwrap();
       setSubmitted(true);
     } catch (requestError: unknown) {
@@ -91,9 +118,35 @@ export function FormFillerPage() {
         )}
 
         <form onSubmit={handleSubmit}>
+          {form.requireEmail && (
+            <div className={styles.formFillerPage__emailSection}>
+              <label
+                htmlFor="respondent-email"
+                className={styles.formFillerPage__emailLabel}
+              >
+                Your email address <span className={styles.formFillerPage__required}>*</span>
+              </label>
+              <input
+                id="respondent-email"
+                type="email"
+                value={respondentEmail}
+                onChange={handleEmailChange}
+                placeholder="you@example.com"
+                autoComplete="email"
+                className={`${styles.formFillerPage__emailInput} ${emailError ? styles["formFillerPage__emailInput--error"] : ""}`}
+              />
+              {emailError && (
+                <span className={styles.formFillerPage__emailError}>
+                  {emailError}
+                </span>
+              )}
+            </div>
+          )}
+
           {validationError && (
             <p className={styles.formFillerPage__error}>{validationError}</p>
           )}
+
           {form.questions.map((q) => (
             <QuestionRenderer
               key={q.id}

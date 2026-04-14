@@ -9,6 +9,9 @@
     font-weight: 500;
     color: $color-text-primary;
     margin-bottom: $spacing-sm;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    white-space: pre-wrap;
   }
 
   &__required {
@@ -39,10 +42,12 @@
 
   &__optionLabel {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: $spacing-md;
     font-size: $font-size-md;
     cursor: pointer;
     overflow-wrap: anywhere;
+    word-break: break-word;
+    white-space: pre-wrap;
   }
 }

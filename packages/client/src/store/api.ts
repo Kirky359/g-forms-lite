@@ -2,6 +2,8 @@ import { createApi, BaseQueryFn, FetchBaseQueryError } from '@reduxjs/toolkit/qu
 import { print } from 'graphql';
 import type { DocumentNode } from 'graphql';
 import { graphqlClient } from '../services/graphql';
+import { auth } from '../services/firebase';
+import { toErrorMessage } from '../utils/error';
 
 type GraphQLQueryArg = {
   document: DocumentNode;
@@ -14,16 +16,22 @@ const graphqlBaseQuery: BaseQueryFn<
   FetchBaseQueryError
 > = async ({ document, variables }) => {
   try {
+    const token = await auth.currentUser?.getIdToken();
+    const requestHeaders: Record<string, string> = token
+      ? { Authorization: `Bearer ${token}` }
+      : {};
+
     const result = await graphqlClient.request(
       print(document),
-      variables as Record<string, unknown>
+      variables as Record<string, unknown>,
+      requestHeaders,
     );
     return { data: result };
   } catch (error) {
     return {
       error: {
         status: 'CUSTOM_ERROR',
-        error: error instanceof Error ? error.message : 'Unknown error',
+        error: toErrorMessage(error, 'Unknown error'),
       } as FetchBaseQueryError,
     };
   }

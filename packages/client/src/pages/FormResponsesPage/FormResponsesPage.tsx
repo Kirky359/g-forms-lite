@@ -4,24 +4,8 @@ import {
   useGetResponsesQuery,
 } from "../../store/formsApi.endpoints";
 import type { Form, Response } from "@forms/shared";
-import { reportClientError } from "../../utils/error";
+import { isAnswerCorrect, formatDisplayValue, formatCorrectAnswer } from "../../utils/quiz";
 import styles from "./FormResponsesPage.module.scss";
-
-function getQuestionById(form: Form, questionId: string) {
-  return form.questions.find((q) => q.id === questionId);
-}
-
-function formatAnswerValue(value: string): string {
-  try {
-    const parsed = JSON.parse(value) as unknown;
-    if (Array.isArray(parsed)) {
-      return parsed.join(", ");
-    }
-  } catch (parseError: unknown) {
-    reportClientError("Failed to parse response answer value", parseError);
-  }
-  return value;
-}
 
 export function FormResponsesPage() {
   const { id } = useParams<{ id: string }>();
@@ -83,6 +67,8 @@ export function FormResponsesPage() {
     );
   }
 
+  const totalPoints = form.questions.filter((q) => q.correctAnswer).length;
+
   return (
     <div className={styles.formResponsesPage}>
       <div className={styles.formResponsesPage__shell}>
@@ -113,6 +99,7 @@ export function FormResponsesPage() {
                 response={response}
                 form={form}
                 index={idx}
+                totalPoints={totalPoints}
               />
             ))}
           </div>
@@ -126,34 +113,69 @@ function ResponseCard({
   response,
   form,
   index,
+  totalPoints,
 }: {
   response: Response;
   form: Form;
   index: number;
+  totalPoints: number;
 }) {
   return (
     <div className={styles.formResponsesPage__responseCard}>
-      <h3 className={styles.formResponsesPage__responseCardTitle}>
-        Response #{index + 1}
-      </h3>
-      <dl className={styles.formResponsesPage__answerList}>
-        {response.answers.map((answer) => {
-          const question = getQuestionById(form, answer.questionId);
-          const label = question?.text ?? answer.questionId;
-          const value = formatAnswerValue(answer.value);
+      <div className={styles.formResponsesPage__responseCardHeader}>
+        <div>
+          <h3 className={styles.formResponsesPage__responseCardTitle}>
+            Response #{index + 1}
+          </h3>
+          {response.respondentEmail && (
+            <p className={styles.formResponsesPage__respondentEmail}>
+              {response.respondentEmail}
+            </p>
+          )}
+        </div>
+        {response.score !== undefined && response.score !== null && totalPoints > 0 && (
+          <span className={styles.formResponsesPage__responseScore}>
+            Score: {response.score} / {totalPoints} ({Math.round((response.score / totalPoints) * 100)}%)
+          </span>
+        )}
+      </div>
+
+      <div className={styles.formResponsesPage__answerList}>
+        {form.questions.map((q, qIdx) => {
+          const answer = response.answers.find((a) => a.questionId === q.id);
+          const rawValue = answer?.value ?? "";
+          const displayValue = formatDisplayValue(q, rawValue);
+          const hasCorrect = Boolean(q.correctAnswer);
+          const correct = hasCorrect && isAnswerCorrect(q, rawValue);
+
           return (
-            <div
-              key={answer.questionId}
-              className={styles.formResponsesPage__answerRow}
-            >
-              <dt className={styles.formResponsesPage__answerTerm}>{label}</dt>
-              <dd className={styles.formResponsesPage__answerDesc}>
-                {value || "(empty)"}
-              </dd>
+            <div key={q.id} className={styles.formResponsesPage__answerRow}>
+              <div className={styles.formResponsesPage__answerLeft}>
+                <p className={styles.formResponsesPage__answerQuestion}>
+                  <span className={styles.formResponsesPage__answerNum}>{qIdx + 1}.</span>
+                  {q.text || <em>Untitled question</em>}
+                </p>
+                <p className={styles.formResponsesPage__answerValue}>
+                  {displayValue}
+                </p>
+                {hasCorrect && !correct && (
+                  <p className={styles.formResponsesPage__answerHint}>
+                    Correct answer: {formatCorrectAnswer(q)}
+                  </p>
+                )}
+              </div>
+              {hasCorrect && (
+                <span
+                  className={`${styles.formResponsesPage__answerMark} ${correct ? styles["formResponsesPage__answerMark--correct"] : styles["formResponsesPage__answerMark--wrong"]}`}
+                  aria-label={correct ? "Correct" : "Incorrect"}
+                >
+                  {correct ? "✓" : "✗"}
+                </span>
+              )}
             </div>
           );
         })}
-      </dl>
+      </div>
     </div>
   );
 }

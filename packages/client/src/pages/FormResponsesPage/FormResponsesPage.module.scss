@@ -89,6 +89,7 @@
     gap: $spacing-lg;
   }
 
+  // ── Response card ────────────────────────────────────────────
   &__responseCard {
     background: #fff;
     border: 1px solid #ebe7f3;
@@ -96,44 +97,115 @@
     padding: $spacing-xl;
   }
 
+  &__responseCardHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: $spacing-md;
+    margin-bottom: $spacing-lg;
+    flex-wrap: wrap;
+  }
+
   &__responseCardTitle {
-    margin: 0 0 $spacing-lg;
+    margin: 0;
     font-size: $font-size-md;
     color: $color-text-secondary;
     font-weight: 600;
-    overflow-wrap: anywhere;
-    word-break: break-word;
-    white-space: pre-wrap;
   }
 
+  &__respondentEmail {
+    margin: 2px 0 0;
+    font-size: $font-size-sm;
+    color: $color-text-secondary;
+  }
+
+  &__responseScore {
+    font-size: $font-size-base;
+    font-weight: 600;
+    padding: 0.25rem 0.75rem;
+    background: #e8f5e9;
+    color: #2e7d32;
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+
+  // ── Answer rows ──────────────────────────────────────────────
   &__answerList {
-    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-sm;
   }
 
   &__answerRow {
-    padding: $spacing-sm 0;
-    border-bottom: 1px solid #f1f3f4;
-
-    &:last-child {
-      border-bottom: none;
-    }
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: $spacing-md;
+    padding: $spacing-md $spacing-lg;
+    background: #fafafa;
+    border: 1px solid $color-border-light;
+    border-radius: 8px;
   }
 
-  &__answerTerm {
-    font-size: $font-size-base;
-    color: $color-text-secondary;
+  &__answerLeft {
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__answerQuestion {
     margin: 0 0 $spacing-xs;
-    overflow-wrap: anywhere;
-    word-break: break-word;
-    white-space: pre-wrap;
-  }
-
-  &__answerDesc {
-    margin: 0;
     font-size: $font-size-md;
+    font-weight: 500;
     color: $color-text-primary;
     overflow-wrap: anywhere;
     word-break: break-word;
+  }
+
+  &__answerNum {
+    color: $color-text-secondary;
+    font-weight: 400;
+    margin-right: $spacing-sm;
+  }
+
+  &__answerValue {
+    margin: 0;
+    font-size: $font-size-base;
+    color: $color-text-secondary;
+    overflow-wrap: anywhere;
+    word-break: break-word;
     white-space: pre-wrap;
+  }
+
+  &__answerHint {
+    margin: $spacing-xs 0 0;
+    font-size: $font-size-base;
+    color: $color-success;
+    font-weight: 500;
+    overflow-wrap: anywhere;
+  }
+
+  &__answerMark {
+    flex-shrink: 0;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    font-weight: 700;
+    margin-top: 1px;
+
+    &--correct {
+      background: $color-success-bg;
+      color: $color-success;
+      border: 1.5px solid $color-success-border;
+    }
+
+    &--wrong {
+      background: $color-error-bg;
+      color: $color-error;
+      border: 1.5px solid #f4b4ae;
+    }
   }
 }

@@ -10,12 +10,16 @@
     "sourceMap": true,
     "outDir": "./dist",
     "baseUrl": "./",
-    "incremental": true,
+    "rootDir": "./src",
+    "paths": {
+      "@forms/shared": ["../shared/dist"]
+    },
     "skipLibCheck": true,
     "strict": true,
     "noImplicitAny": true,
     "strictPropertyInitialization": false,
     "strictNullChecks": true,
     "noFallthroughCasesInSwitch": true,
-  }
+  },
+  "include": ["src"]
 }

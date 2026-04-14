@@ -4,7 +4,20 @@ export type QuestionTypeValue =
   | "TEXT"
   | "MULTIPLE_CHOICE"
   | "CHECKBOX"
-  | "DATE";
+  | "DATE"
+  | "EMAIL";
+
+const VALID_QUESTION_TYPES = new Set<QuestionTypeValue>([
+  "TEXT",
+  "MULTIPLE_CHOICE",
+  "CHECKBOX",
+  "DATE",
+  "EMAIL",
+]);
+
+export function isQuestionTypeValue(value: string): value is QuestionTypeValue {
+  return VALID_QUESTION_TYPES.has(value as QuestionTypeValue);
+}
 
 export interface FormBuilderQuestion {
   id: string;
@@ -12,15 +25,31 @@ export interface FormBuilderQuestion {
   text: string;
   options: string[];
   required: boolean;
+  correctAnswer?: string;
 }
 
 const generateId = (): string =>
   `q-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
 
+export interface FormBuilderInitial {
+  title: string;
+  description: string;
+  requireEmail: boolean;
+  questions: FormBuilderQuestion[];
+}
+
 export function useFormBuilder() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [requireEmail, setRequireEmail] = useState(false);
   const [questions, setQuestions] = useState<FormBuilderQuestion[]>([]);
+
+  const initialize = useCallback((data: FormBuilderInitial) => {
+    setTitle(data.title);
+    setDescription(data.description);
+    setRequireEmail(data.requireEmail);
+    setQuestions(data.questions);
+  }, []);
 
   const addQuestion = useCallback((type: QuestionTypeValue) => {
     const defaultOptions =
@@ -88,18 +117,21 @@ export function useFormBuilder() {
     return {
       title,
       description: description || undefined,
+      requireEmail,
       questions: questions.map((q) => ({
         type: q.type,
         text: q.text,
         options: q.options.length > 0 ? q.options : undefined,
         required: q.required,
+        correctAnswer: q.correctAnswer || undefined,
       })),
     };
-  }, [title, description, questions]);
+  }, [title, description, requireEmail, questions]);
 
   const reset = useCallback(() => {
     setTitle("");
     setDescription("");
+    setRequireEmail(false);
     setQuestions([]);
   }, []);
 
@@ -108,6 +140,8 @@ export function useFormBuilder() {
     setTitle,
     description,
     setDescription,
+    requireEmail,
+    setRequireEmail,
     questions,
     addQuestion,
     updateQuestion,
@@ -117,5 +151,6 @@ export function useFormBuilder() {
     removeOption,
     toMutationInput,
     reset,
+    initialize,
   };
 }

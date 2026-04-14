@@ -1,0 +1,59 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Form {
+  id           String     @id @default(uuid())
+  userId       String
+  title        String
+  description  String?
+  requireEmail Boolean    @default(false)
+  questions    Question[]
+  responses    Response[]
+  createdAt    DateTime   @default(now())
+}
+
+model Question {
+  id            String       @id @default(uuid())
+  formId        String
+  form          Form         @relation(fields: [formId], references: [id], onDelete: Cascade)
+  type          QuestionType
+  text          String
+  options       String[]
+  required      Boolean      @default(false)
+  order         Int
+  correctAnswer String?
+}
+
+model Response {
+  id              String   @id @default(uuid())
+  formId          String
+  form            Form     @relation(fields: [formId], references: [id], onDelete: Cascade)
+  respondentEmail String?
+  answers         Answer[]
+  score           Int?
+  createdAt       DateTime @default(now())
+
+  @@unique([formId, respondentEmail])
+}
+
+model Answer {
+  id         String   @id @default(uuid())
+  responseId String
+  response   Response @relation(fields: [responseId], references: [id], onDelete: Cascade)
+  questionId String
+  value      String
+}
+
+enum QuestionType {
+  TEXT
+  MULTIPLE_CHOICE
+  CHECKBOX
+  DATE
+  EMAIL
+}

@@ -23,10 +23,14 @@ export function useFormFiller(questions: Question[]) {
 
   const validate = useCallback((): boolean => {
     for (const q of questions) {
-      if (!q.required) continue;
       const val = answers[q.id];
-      if (val === undefined || val === '') return false;
-      if (Array.isArray(val) && val.length === 0) return false;
+      if (q.required) {
+        if (val === undefined || val === '') return false;
+        if (Array.isArray(val) && val.length === 0) return false;
+      }
+      if (q.type === 'EMAIL' && typeof val === 'string' && val.length > 0) {
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val)) return false;
+      }
     }
     return true;
   }, [questions, answers]);
