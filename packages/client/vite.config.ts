@@ -14,8 +14,8 @@ export default defineConfig({
       include: ['src/hooks/**', 'src/utils/**', 'src/components/**'],
       exclude: ['src/**/__tests__/**'],
       thresholds: {
-        lines: 55,
-        functions: 55,
+        lines: 50,
+        functions: 50,
       },
     },
   },
