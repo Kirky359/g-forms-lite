@@ -13,6 +13,7 @@ COPY packages/shared ./packages/shared
 COPY packages/server ./packages/server
 
 RUN npm run build --workspace=@forms/shared
+RUN npx prisma generate --schema=packages/server/prisma/schema.prisma
 RUN npm run build --workspace=server
 
 # ─── Production stage ──────────────────────────────────────────────────────────
@@ -30,6 +31,7 @@ RUN npm ci --omit=dev
 # Built JS artifacts
 COPY --from=builder /app/packages/shared/dist ./packages/shared/dist
 COPY --from=builder /app/packages/server/dist ./packages/server/dist
+COPY --from=builder /app/packages/server/generated ./packages/server/generated
 
 # Prisma: migration files + config (needed for migrate deploy)
 COPY packages/server/prisma ./packages/server/prisma
