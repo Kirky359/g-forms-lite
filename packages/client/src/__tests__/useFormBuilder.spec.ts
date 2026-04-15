@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { renderHook, act } from '@testing-library/react';
-import { useFormBuilder } from '../hooks/useFormBuilder';
+import { useFormBuilder } from '../hooks';
 
 // ─── addQuestion ──────────────────────────────────────────────────────────────
 

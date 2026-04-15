@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { QuestionEditor } from '../QuestionEditor';
-import { type QuestionTypeValue, type useFormBuilder } from '../../hooks/useFormBuilder';
+import { type QuestionTypeValue, type useFormBuilder } from '../../hooks';
 import { MAX_TEXT_LENGTH } from '@forms/shared';
 import styles from '../../pages/FormBuilderPage/FormBuilderPage.module.scss';
 

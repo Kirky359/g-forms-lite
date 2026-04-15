@@ -1,9 +1,9 @@
 import { useEffect, useRef } from 'react';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import { FormBuilderForm } from '../../components/FormBuilderForm';
-import { useFormBuilder, isQuestionTypeValue } from '../../hooks/useFormBuilder';
+import { useFormBuilder, isQuestionTypeValue } from '../../hooks';
 import { useGetFormQuery, useUpdateFormMutation } from '../../store/formsApi.endpoints';
-import { reportClientError, getRtkErrorMessage } from '../../utils/error';
+import { reportClientError, getRtkErrorMessage } from '../../utils';
 import styles from '../FormBuilderPage/FormBuilderPage.module.scss';
 
 export function EditFormPage() {

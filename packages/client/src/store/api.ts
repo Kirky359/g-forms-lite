@@ -1,9 +1,8 @@
 import { createApi, BaseQueryFn, FetchBaseQueryError } from '@reduxjs/toolkit/query/react';
 import { print } from 'graphql';
 import type { DocumentNode } from 'graphql';
-import { graphqlClient } from '../services/graphql';
-import { auth } from '../services/firebase';
-import { toErrorMessage } from '../utils/error';
+import { graphqlClient, auth } from '../services';
+import { toErrorMessage } from '../utils';
 
 type GraphQLQueryArg = {
   document: DocumentNode;

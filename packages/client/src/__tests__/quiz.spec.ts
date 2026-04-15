@@ -5,7 +5,7 @@ import {
   isAnswerCorrect,
   formatDisplayValue,
   formatCorrectAnswer,
-} from '../utils/quiz';
+} from '../utils';
 
 const q = (overrides: Partial<Question> = {}): Question => ({
   id: 'q1',

@@ -1,7 +1,7 @@
 import { useState, type FormEvent, type ChangeEvent } from 'react';
 import { Navigate } from 'react-router-dom';
 import { isValidEmail } from '@forms/shared';
-import { useAuth } from '../../context/AuthContext';
+import { useAuth } from '../../context';
 import styles from './AuthPage.module.scss';
 
 const GENERIC_ERROR = 'Invalid email or password. Please try again or reset your password.';

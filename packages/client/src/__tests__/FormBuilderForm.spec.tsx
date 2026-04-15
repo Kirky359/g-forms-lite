@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { FormBuilderForm } from '../components/FormBuilderForm';
-import type { useFormBuilder } from '../hooks/useFormBuilder';
+import type { useFormBuilder } from '../hooks';
 
 // QuestionEditor is a complex child — mock it to keep these tests focused on
 // FormBuilderForm's own rendering and event-wiring logic.

@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { renderHook, act } from '@testing-library/react';
 import { QuestionType } from '@forms/shared';
 import type { Question } from '@forms/shared';
-import { useFormFiller } from '../hooks/useFormFiller';
+import { useFormFiller } from '../hooks';
 
 const q = (overrides: Partial<Question> = {}): Question => ({
   id: 'q1',

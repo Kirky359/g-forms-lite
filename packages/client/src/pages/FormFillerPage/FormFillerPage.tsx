@@ -1,14 +1,14 @@
 import { useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "../../context";
 import { isValidEmail } from "@forms/shared";
 import { QuestionRenderer } from "../../components/QuestionRenderer";
-import { useFormFiller } from "../../hooks/useFormFiller";
+import { useFormFiller } from "../../hooks";
 import {
   useGetFormQuery,
   useSubmitResponseMutation,
 } from "../../store/formsApi.endpoints";
-import { reportClientError, toErrorMessage } from "../../utils/error";
+import { reportClientError, toErrorMessage } from "../../utils";
 import styles from "./FormFillerPage.module.scss";
 
 export function FormFillerPage() {

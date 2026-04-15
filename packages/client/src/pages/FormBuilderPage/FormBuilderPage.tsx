@@ -1,8 +1,8 @@
 import { useNavigate } from 'react-router-dom';
 import { FormBuilderForm } from '../../components/FormBuilderForm';
-import { useFormBuilder } from '../../hooks/useFormBuilder';
+import { useFormBuilder } from '../../hooks';
 import { useCreateFormMutation } from '../../store/formsApi.endpoints';
-import { reportClientError, getRtkErrorMessage } from '../../utils/error';
+import { reportClientError, getRtkErrorMessage } from '../../utils';
 
 export function FormBuilderPage() {
   const navigate = useNavigate();

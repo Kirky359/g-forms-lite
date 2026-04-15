@@ -15,8 +15,7 @@ import {
   GoogleAuthProvider,
   signOut as firebaseSignOut,
 } from 'firebase/auth';
-import { auth } from '../services/firebase';
-import { checkMethods as apiCheckMethods } from '../services/authApi';
+import { auth, checkMethods as apiCheckMethods } from '../services';
 
 const googleProvider = new GoogleAuthProvider();
 

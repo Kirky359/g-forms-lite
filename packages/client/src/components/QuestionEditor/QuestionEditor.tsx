@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import type { FormBuilderQuestion } from '../../hooks/useFormBuilder';
+import type { FormBuilderQuestion } from '../../hooks';
 import { MAX_TEXT_LENGTH } from '@forms/shared';
 import styles from './QuestionEditor.module.scss';
 
