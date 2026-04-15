@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useParams, Link } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 import { isValidEmail } from "@forms/shared";
 import { QuestionRenderer } from "../../components/QuestionRenderer";
 import { useFormFiller } from "../../hooks/useFormFiller";
@@ -12,6 +13,7 @@ import styles from "./FormFillerPage.module.scss";
 
 export function FormFillerPage() {
   const { id } = useParams<{ id: string }>();
+  const { user } = useAuth();
   const [submitted, setSubmitted] = useState(false);
   const [respondentEmail, setRespondentEmail] = useState("");
   const [emailError, setEmailError] = useState<string | null>(null);
@@ -50,9 +52,11 @@ export function FormFillerPage() {
           <h2 className={styles.formFillerPage__successTitle}>
             Form submitted successfully!
           </h2>
-          <Link to="/" className={styles.formFillerPage__actionLink}>
-            Back to main
-          </Link>
+          {user && (
+            <Link to="/" className={styles.formFillerPage__actionLink}>
+              Back to main
+            </Link>
+          )}
         </div>
       </div>
     );
@@ -109,11 +113,13 @@ export function FormFillerPage() {
   return (
     <div className={styles.formFillerPage}>
       <div className={styles.formFillerPage__card}>
-        <div className={styles.formFillerPage__topActions}>
-          <Link to="/" className={styles.formFillerPage__actionLink}>
-            Back to main
-          </Link>
-        </div>
+        {user && (
+          <div className={styles.formFillerPage__topActions}>
+            <Link to="/" className={styles.formFillerPage__actionLink}>
+              Back to main
+            </Link>
+          </div>
+        )}
         <h1 className={styles.formFillerPage__cardTitle}>{form.title}</h1>
         {form.description && (
           <p className={styles.formFillerPage__cardDescription}>
