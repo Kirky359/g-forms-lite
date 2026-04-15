@@ -11,6 +11,10 @@ import type { Request, Response } from 'express';
 @Injectable()
 export class GqlThrottlerGuard extends ThrottlerGuard {
   getRequestResponse(context: ExecutionContext): { req: Request; res: Response } {
+    if (context.getType() === 'http') {
+      const http = context.switchToHttp();
+      return { req: http.getRequest(), res: http.getResponse() };
+    }
     const gqlCtx = GqlExecutionContext.create(context);
     const ctx = gqlCtx.getContext<{ req: Request; res: Response }>();
     return { req: ctx.req, res: ctx.res };
