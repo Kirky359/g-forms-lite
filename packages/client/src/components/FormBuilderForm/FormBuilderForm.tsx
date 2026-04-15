@@ -4,7 +4,7 @@ import { type QuestionTypeValue, type useFormBuilder } from '../../hooks/useForm
 import { MAX_TEXT_LENGTH } from '@forms/shared';
 import styles from '../../pages/FormBuilderPage/FormBuilderPage.module.scss';
 
-const QUESTION_TYPES: QuestionTypeValue[] = ['TEXT', 'MULTIPLE_CHOICE', 'CHECKBOX', 'DATE', 'EMAIL'];
+const QUESTION_TYPES: QuestionTypeValue[] = ['TEXT', 'MULTIPLE_CHOICE', 'CHECKBOX', 'DATE'];
 
 function formatQuestionType(value: string): string {
   return value
