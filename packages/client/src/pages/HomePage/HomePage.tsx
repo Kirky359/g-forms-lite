@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useGetFormsQuery, useDeleteFormMutation } from "../../store/formsApi.endpoints";
 import { useAuth } from "../../context/AuthContext";
@@ -8,6 +9,15 @@ export function HomePage() {
   const { user, signOut } = useAuth();
   const { data, isLoading, error } = useGetFormsQuery();
   const [deleteForm, { isLoading: isDeleting }] = useDeleteFormMutation();
+  const [copiedId, setCopiedId] = useState<string | null>(null);
+
+  const handleCopyLink = (id: string): void => {
+    const url = `${window.location.origin}/forms/${id}/fill`;
+    void navigator.clipboard.writeText(url).then(() => {
+      setCopiedId(id);
+      setTimeout(() => setCopiedId(null), 2000);
+    });
+  };
 
   const handleDeleteForm = async (id: string): Promise<void> => {
     const isConfirmed = window.confirm("Delete this form and remove it from the main menu?");
@@ -73,6 +83,13 @@ export function HomePage() {
                 >
                   View Form
                 </Link>
+                <button
+                  type="button"
+                  className={`${styles.homePage__copyButton} ${copiedId === form.id ? styles["homePage__copyButton--copied"] : ""}`}
+                  onClick={() => handleCopyLink(form.id)}
+                >
+                  {copiedId === form.id ? "Copied!" : "Copy Link"}
+                </button>
                 <Link
                   to={`/forms/${form.id}/edit`}
                   className={styles.homePage__actionLink}

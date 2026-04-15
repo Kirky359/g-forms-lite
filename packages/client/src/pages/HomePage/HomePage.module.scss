@@ -164,6 +164,31 @@
     }
   }
 
+  &__copyButton {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 38px;
+    padding: 0.45rem 0.95rem;
+    border-radius: 8px;
+    border: 1px solid #ddd5ee;
+    background: #fff;
+    color: $color-link;
+    font-size: $font-size-base;
+    font-weight: 500;
+    cursor: pointer;
+
+    &:hover {
+      background: #f6f1ff;
+    }
+
+    &--copied {
+      border-color: #b7ddb7;
+      background: #f0fbf0;
+      color: #2d7a2d;
+    }
+  }
+
   &__deleteButton {
     display: inline-flex;
     align-items: center;
