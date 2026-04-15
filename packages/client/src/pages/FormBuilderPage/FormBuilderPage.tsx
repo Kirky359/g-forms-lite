@@ -31,6 +31,7 @@ export function FormBuilderPage() {
       isSaving={isLoading}
       canSave={canSave}
       onSave={handleSave}
+      onCancel={() => navigate('/')}
       error={errorMessage}
     />
   );
