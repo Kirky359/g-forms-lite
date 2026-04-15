@@ -67,13 +67,13 @@ describe('FormBuilderForm — rendering', () => {
     expect(screen.getByRole('textbox', { name: /description/i })).toHaveValue('Helpful context');
   });
 
-  it('renders add-question buttons for all 5 question types', () => {
+  it('renders add-question buttons for all 4 question types', () => {
     renderForm();
     expect(screen.getByRole('button', { name: 'Add Text' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Add Multiple Choice' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Add Checkbox' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Add Date' })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Add Email' })).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Add Email' })).not.toBeInTheDocument();
   });
 
   it('renders the "Collect respondent email" checkbox unchecked by default', () => {
