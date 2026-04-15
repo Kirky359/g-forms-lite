@@ -69,6 +69,10 @@ export function FormFillerPage() {
     if (emailError) setEmailError(validateEmail(e.target.value));
   };
 
+  const handleEmailBlur = () => {
+    if (respondentEmail) setEmailError(validateEmail(respondentEmail));
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setValidationError(null);
@@ -131,6 +135,7 @@ export function FormFillerPage() {
                 type="email"
                 value={respondentEmail}
                 onChange={handleEmailChange}
+                onBlur={handleEmailBlur}
                 placeholder="you@example.com"
                 autoComplete="email"
                 className={`${styles.formFillerPage__emailInput} ${emailError ? styles["formFillerPage__emailInput--error"] : ""}`}
